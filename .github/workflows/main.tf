@@ -1,5 +1,5 @@
 resource "aws_instance" "example" {
-  ami           = "ami-0c55b159cbfafe1f0" # Replace with your desired AMI ID
+  ami           = "i-0cc5a298645472646" # desired AMI ID
   instance_type = var.instance_type
 
   tags = {
