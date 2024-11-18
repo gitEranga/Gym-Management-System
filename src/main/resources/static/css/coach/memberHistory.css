@@ -1,0 +1,132 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f8;
+}
+
+/* Header */
+header {
+    background: linear-gradient(to top, rgba(217, 217, 217, 0.60) 41%, rgba(115, 115, 115, 0.60) 100%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 60px; /* Adjusted header height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0,0.5);
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Sticks the header at the top */
+    background-image: url('/images/img12.jpg');
+}
+
+/* Content Area */
+.content {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Back Button */
+.btn-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 15px;
+    background-color: #4b79a1;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #283e51;
+}
+
+/* Member Grid Layout */
+.member-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+/* Member Card */
+.member-card {
+    display: flex;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Section: Member Info */
+.left-section {
+    width: 50%;
+    padding: 20px;
+    text-align: center;
+    border-right: 1px solid #e0e0e0;
+}
+
+.avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin: 10px 0;
+    font-size: 22px;
+    color: #333;
+}
+
+/* Right Section: Booking Details */
+.right-section {
+    width: 50%;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.right-section h3 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #555;
+}
+
+/* Buttons */
+.btn-action {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4b79a1;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.btn-action:hover {
+    background-color: #283e51;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .member-card {
+        flex-direction: column;
+    }
+
+    .left-section, .right-section {
+        width: 100%;
+        border-right: none;
+    }
+}

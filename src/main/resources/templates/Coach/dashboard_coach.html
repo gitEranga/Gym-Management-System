@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/coach/dashboardCoach.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/coach/coach_dashboard}">HOME</a></li>
+            <li><a href="#">MEMBERS</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+        </ul>
+    </nav>
+
+    <main class="content">
+
+        <p>All Assigned members</p>
+        <p>View all bookings assigned to you and manage them effectively.</p>
+
+        <!-- Table Section -->
+        <div class="table-container">
+            <div class="table-header">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Booking Id</th>
+                        <th>Booked Date</th>
+                        <th>Time</th>
+                        <th>Member User Name</th>
+                        <th>Other Details</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table-body">
+                <div class="table-scroll">
+                    <table>
+                        <tbody>
+                        <th:block th:each="booking : ${bookings}">
+                            <tr>
+                                <td th:text="${booking.id}"></td>
+                                <td th:text="${booking.scheduleDate}"></td>
+                                <td>
+                                    <!-- Conditional logic for time display based on reservationNumber -->
+                                    <span th:if="${booking.reservationNumber} >= 1 and ${booking.reservationNumber} <= 10">
+                            10.00am - 01.00pm
+                        </span>
+                                    <span th:if="${booking.reservationNumber} >= 11 and ${booking.reservationNumber} <= 20">
+                            01.00pm - 05.00pm
+                        </span>
+                                    <span th:if="${booking.reservationNumber} >= 21 and ${booking.reservationNumber} <= 30">
+                            05.00pm - 08.00pm
+                        </span>
+                                </td>
+                                <td th:text="${booking.userName}"></td>
+                                <td>
+
+
+                                    <form action="/coach/member_history" method="post">
+                                        <input type="hidden" name="userName" th:value="${booking.userName}">
+                                        <input type="hidden" name="id" th:value="${booking.id}">
+                                        <button type="submit" class="btn-s">View</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

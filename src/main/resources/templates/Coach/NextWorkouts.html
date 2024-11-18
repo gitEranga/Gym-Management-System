@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member History</title>
+    <link rel="stylesheet" th:href="@{/css/coach/NextWorkOut.css}">
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+
+<!-- Member details card -->
+<div class="details-card" th:each="member : ${members}">
+    <div class="details-card">
+        <div class="details-row">
+            <p><strong>Member Name :</strong> <span th:text="${member.userName}"></span></p>
+            <p><strong>Scheduled Date :</strong> <span th:text="${member.scheduleDate}"></span></p>
+            <p><strong>Booking ID :</strong> <span th:text="${member.id}"></span></p>
+
+            <!-- Hidden input for booking ID -->
+            <input type="hidden" id="booking-id" th:value="${member.id}" />
+
+        </div>
+    </div>
+
+    <div id="successMessage" class="alert alert-success" role="alert" style="display: none;"></div>
+    <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;"></div>
+
+    <!-- Split container for left and right side sections -->
+    <div class="split-container">
+
+        <!-- Left side: Assigned workouts table -->
+        <div class="left-column">
+                <h3>Assigned Workouts</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Assigned Workout</th>
+                        <th>Reps</th>
+                        <th>Sets</th>
+                        <th>Description</th>
+                        <th> </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Workouts will be added here dynamically -->
+                    </tbody>
+                </table>
+                    <!-- Button to submit workouts -->
+                    <button type="button" class="assign-workouts-button" onclick="submitWorkouts(event)">
+                        Assign Workouts
+                    </button>
+        </div>
+
+
+
+
+        <!-- Right side: Workout categories and details -->
+        <div class="right-column">
+            <h3>Workout Categories</h3>
+            <div class="workout-card">
+                <ul>
+                    <li onclick="showWorkouts('upperBody', this)">Upper Body</li>
+                    <li onclick="showWorkouts('core', this)">Core</li>
+                    <li onclick="showWorkouts('lowerBody', this)">Lower Body</li>
+                    <li onclick="showWorkouts('fullBody', this)">Full Body</li>
+                </ul>
+            </div>
+
+            <!-- Workout details for each category -->
+            <div class="workout-details" id="upperBody">
+                <h4>Upper Body Workouts</h4>
+                <div class="exercise-list">
+                    <div class="exercise-item" onclick="showExercises('chest')">Chest</div>
+                    <div class="exercise-item" onclick="showExercises('back')">Back</div>
+                    <div class="exercise-item" onclick="showExercises('shoulders')">Shoulders</div>
+                    <div class="exercise-item" onclick="showExercises('arms')">Arms</div>
+                    <div class="exercise-item" onclick="showExercises('forearms')">Forearms</div>
+                </div>
+            </div>
+
+            <div class="workout-details" id="core">
+                <h4>Core Workouts</h4>
+                <div class="exercise-list">
+                    <div class="exercise-item" onclick="showExercises('abs')">Abs</div>
+                    <div class="exercise-item" onclick="showExercises('obliques')">Obliques</div>
+                    <div class="exercise-item" onclick="showExercises('lowerBack')">Lower Back</div>
+                </div>
+            </div>
+
+            <div class="workout-details" id="lowerBody">
+                <h4>Lower Body Workouts</h4>
+                <div class="exercise-list">
+                    <div class="exercise-item" onclick="showExercises('quads')">Quads</div>
+                    <div class="exercise-item" onclick="showExercises('hamstrings')">Hamstrings</div>
+                    <div class="exercise-item" onclick="showExercises('glutes')">Glutes</div>
+                    <div class="exercise-item" onclick="showExercises('calves')">Calves</div>
+                </div>
+            </div>
+
+            <div class="workout-details" id="fullBody">
+                <h4>Full Body Workouts</h4>
+                <div class="exercise-list">
+                    <div class="exercise-item" onclick="showExercises('fullBody')">Full Body Exercises</div>
+                </div>
+            </div>
+
+            <!-- Display the exercises and video for each choice -->
+            <div id="exerciseDetails" style="margin-top: 20px;"></div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Function to show workouts based on the selected category and apply ash-colored border
+    function showWorkouts(category, element) {
+        // Hide all workout details
+        var details = document.getElementsByClassName('workout-details');
+        for (var i = 0; i < details.length; i++) {
+            details[i].style.display = 'none';
+        }
+        // Show the selected category details
+        document.getElementById(category).style.display = 'block';
+
+        // Remove 'active' class from all list items
+        var listItems = document.querySelectorAll('.workout-card li');
+        listItems.forEach(function (item) {
+            item.classList.remove('active');
+        });
+
+        // Add 'active' class to the clicked item
+        element.classList.add('active');
+
+        // Clear the exercise details section
+        document.getElementById('exerciseDetails').innerHTML = '';
+    }
+
+    // Function to show exercises and video based on the clicked choice
+    function showExercises(exercise) {
+        // Remove active class from all exercise items
+        var exerciseItems = document.querySelectorAll('.exercise-item');
+        exerciseItems.forEach(function (item) {
+            item.classList.remove('active-exercise');
+        });
+
+        // Add active class to the selected exercise item
+        var selectedExerciseItem = event.target; // Get the clicked item
+        selectedExerciseItem.classList.add('active-exercise');
+
+        var exercises = {
+    chest: {
+        exercises: [
+            { name: 'Bench Press', video: 'https://www.shutterstock.com/shutterstock/videos/1098223947/preview/stock-footage-barbell-lying-close-grip-press-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Incline Bench Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100873253/preview/stock-footage-dumbbell-chest-press-incline-bench-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Push-ups', video: 'https://www.shutterstock.com/shutterstock/videos/1100873235/preview/stock-footage-push-ups-bodyweight-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'Chest Fly', video: 'https://www.shutterstock.com/shutterstock/videos/1100873091/preview/stock-footage-chest-fly-high-to-low-resistance-band-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Cable Crossover', video: ' ' },
+            { name: 'Chest Dips', video: 'https://www.shutterstock.com/shutterstock/videos/1100043727/preview/stock-footage-chest-dip-on-dip-fitness-workout-animation-male-muscle-highlight-demonstration-at-k-resolution.webm' },
+            { name: 'Pec Deck Machine', video: ' ' },
+            { name: 'Dumbbell Pullover', video: 'https://www.shutterstock.com/shutterstock/videos/1104343009/preview/stock-footage-dumbbell-bent-arm-pullover-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Decline Bench Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100873273/preview/stock-footage-barbell-bench-press-decline-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Smith Machine Bench Press', video: ' ' }
+        ]
+    },
+    back: {
+       exercises: [
+            { name: 'Pull-ups', video: 'https://www.shutterstock.com/shutterstock/videos/1104342945/preview/stock-footage-pull-up-normal-grip-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'Lat Pulldown', video: 'https://www.shutterstock.com/shutterstock/videos/1104342845/preview/stock-footage-cable-close-grip-front-lat-pulldown-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Bent-over Rows', video: 'https://www.shutterstock.com/shutterstock/videos/1104380833/preview/stock-footage-barbell-push-bent-over-row-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Seated Cable Rows', video: 'https://www.shutterstock.com/shutterstock/videos/1104343027/preview/stock-footage-cable-seated-row-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'T-Bar Row', video: ' ' },
+            { name: 'Deadlifts', video: 'https://www.shutterstock.com/shutterstock/videos/1100873123/preview/stock-footage-dumbbell-straight-leg-deadlift-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Face Pulls', video: 'https://www.shutterstock.com/shutterstock/videos/1100526275/preview/stock-footage-dumbbell-bent-over-face-pull-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Inverted Rows', video: 'https://www.shutterstock.com/shutterstock/videos/1104342971/preview/stock-footage-inverted-rows-on-smith-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'Single-arm Dumbbell Row', video: 'https://www.shutterstock.com/shutterstock/videos/1104342987/preview/stock-footage-dumbbells-single-arm-row-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm' },
+            { name: 'Shrugs', video: 'https://www.shutterstock.com/shutterstock/videos/1100607083/preview/stock-footage-dumbbell-rear-full-shrugs-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm' }
+        ]
+    },
+    shoulders: {
+       exercises: [
+            { name: 'Shoulder Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100606985/preview/stock-footage-dumbbell-seated-shoulder-press-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Lateral Raises', video: 'https://www.shutterstock.com/shutterstock/videos/1100607023/preview/stock-footage-dumbbell-rear-lateral-raise-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Front Raises', video: 'https://www.shutterstock.com/shutterstock/videos/1100526357/preview/stock-footage-standing-front-raise-dumbbell-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Prone Rear Delt Fly', video: 'https://www.shutterstock.com/video/clip-1100526009-prone-rear-delt-fly-on-bench-fitness' },
+            { name: 'Arnold Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100526295/preview/stock-footage-arnold-press-dumbbell-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'Upright Row', video: 'https://www.shutterstock.com/shutterstock/videos/1104380831/preview/stock-footage-barbell-wide-grip-upright-row-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Dumbbell Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100606975/preview/stock-footage-dumbbell-standing-behind-back-shoulders-press-fitness-exercise-workout-animation-male-muscle.webm' },
+            { name: 'Machine Shoulder Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100526011/preview/stock-footage-smith-machine-shoulder-press-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Barbell Overhead Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100606937/preview/stock-footage-barbell-seated-overhead-press-fitness-exercise-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Reverse Pec Deck Machine', video: ' ' }
+        ]
+    },
+    arms: {
+       exercises: [
+            { name: 'Bicep Curls', video: ' ' },
+            { name: 'Hammer Curls', video: 'https://www.shutterstock.com/shutterstock/videos/1100043739/preview/stock-footage-dumbbell-cross-body-hammer-curl-version-fitness-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Concentration Curls', video: 'https://www.shutterstock.com/shutterstock/videos/3458294499/preview/stock-footage-female-band-concentration-curl-fitness-exercise-workout.webm' },
+            { name: 'Preacher Curls', video: 'https://www.shutterstock.com/shutterstock/videos/1100043735/preview/stock-footage-dumbbell-preacher-curl-with-turned-torso-fitness-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Tricep Dips', video: 'https://www.shutterstock.com/shutterstock/videos/1100043669/preview/stock-footage-triceps-dip-machine-fitness-workout-animation-male-muscle-highlight-demonstration-at-k-resolution.webm' },
+            { name: 'Skull Crushers', video: 'https://www.shutterstock.com/shutterstock/videos/1100043873/preview/stock-footage-barbell-lying-triceps-skull-crushers-fitness-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Tricep Pushdowns (Cable)', video: 'https://www.shutterstock.com/shutterstock/videos/1100043687/preview/stock-footage-cable-reverse-grip-triceps-pushdown-ez-bar-fitness-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Overhead Tricep Extension (Cable)', video: 'https://www.shutterstock.com/shutterstock/videos/1100043691/preview/stock-footage-cable-triceps-overhead-extension-ez-bar-fitness-workout-animation-male-muscle-highlight.webm' },
+            { name: 'Close-grip Bench Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100043823/preview/stock-footage-close-grip-barbell-bench-press-fitness-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'Reverse Grip ', video: 'https://www.shutterstock.com/shutterstock/videos/1100043845/preview/stock-footage-cable-reverse-grip-pushdown-fitness-workout-animation-male-muscle-highlight-demonstration-at-k.webm' }
+        ]
+    },
+     forearms: {
+       exercises: [
+            { name: 'Wrist Curls (Dumbbell)', video: 'https://www.shutterstock.com/shutterstock/videos/1100873197/preview/stock-footage-wrist-curl-dumbbell-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' },
+            { name: 'Reverse Wrist Curls', video: 'https://www.shutterstock.com/shutterstock/videos/1100873213/preview/stock-footage-dumbbell-reverse-wrist-curl-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm' },
+            { name: 'Farmer’s Walk', video: ' ' },
+            { name: 'Reverse Barbell Curl', video: ' ' },
+            { name: 'Zottman Curl', video: ' ' },
+            { name: 'Forearm Plank to Push-up', video: ' ' },
+            { name: 'Plate Pinch', video: ' ' },
+            { name: 'Towel Pull-ups', video: ' ' },
+            { name: 'Hammer Curl to Wrist Curls', video: ' ' },
+            { name: 'Dead Hang', video: 'https://www.shutterstock.com/shutterstock/videos/1100526187/preview/stock-footage-dead-hang-stretch-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm' }
+        ]
+    },
+
+    abs: {
+       exercises: [
+            { name: 'Crunches', video: 'https://www.shutterstock.com/shutterstock/videos/1098699603/preview/stock-footage-crunch-frog-on-floor-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Plank ', video: 'https://www.shutterstock.com/shutterstock/videos/1098699449/preview/stock-footage-plank-on-elbows-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Leg Raises', video: 'https://www.shutterstock.com/shutterstock/videos/1098699493/preview/stock-footage-alternate-leg-raise-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Bicycle Crunches', video: 'https://www.shutterstock.com/shutterstock/videos/1098699631/preview/stock-footage-bicycle-twisting-crunch-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm ' },
+            { name: 'Mountain Climbers', video: 'https://www.shutterstock.com/shutterstock/videos/1098699499/preview/stock-footage-mountain-climbers-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Sit-ups', video: 'https://www.shutterstock.com/shutterstock/videos/1098699657/preview/stock-footage-assisted-sit-ups-with-partner-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Russian Twists', video: 'https://www.shutterstock.com/shutterstock/videos/1098699541/preview/stock-footage-dumbbell-straight-leg-russian-twist-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'V-Ups', video: 'https://www.shutterstock.com/shutterstock/videos/1098699405/preview/stock-footage-v-up-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k-resolution-fps.webm ' },
+            { name: 'Ab Wheel Rollouts', video: ' ' },
+            { name: 'Cable Crunch', video: ' ' }
+        ]
+    },
+    obliques: {
+       exercises: [
+            { name: 'Side Planks', video: 'https://www.shutterstock.com/shutterstock/videos/1098699423/preview/stock-footage-side-plank-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k-resolution.webm ' },
+            { name: 'Russian Twists ', video: 'https://www.shutterstock.com/shutterstock/videos/1098699541/preview/stock-footage-dumbbell-straight-leg-russian-twist-fitness-exercise-workout-animation-male-muscle-highlight.webm  ' },
+            { name: 'Side Bends', video: 'https://www.shutterstock.com/shutterstock/videos/1098699553/preview/stock-footage-dumbbell-side-bend-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Woodchoppers', video: ' ' },
+            { name: 'Windshield Wipers', video: ' ' },
+            { name: 'Cross-body Mountain Climbers', video: 'https://www.shutterstock.com/shutterstock/videos/1098699383/preview/stock-footage-bridge-mountain-climber-cross-body-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Heel Touches', video: 'https://www.shutterstock.com/shutterstock/videos/1098699483/preview/stock-footage-alternate-heel-touches-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Hanging Oblique Knee Raise', video: ' ' },
+            { name: 'Seated Oblique Twists ', video: ' ' },
+            { name: 'Side Jackknife', video: ' ' }
+        ]
+    },
+    lowerBack: {
+       exercises: [
+            { name: 'Back Extensions', video: 'https://www.shutterstock.com/shutterstock/videos/1104380845/preview/stock-footage-back-extension-machine-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Superman', video: 'https://www.shutterstock.com/shutterstock/videos/1104380891/preview/stock-footage-around-the-world-superman-hold-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Deadlifts', video: 'https://www.shutterstock.com/shutterstock/videos/1104380823/preview/stock-footage-barbell-romanian-deadlift-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm ' },
+            { name: 'Good Mornings', video: 'https://www.shutterstock.com/shutterstock/videos/1104380873/preview/stock-footage-barbell-good-morning-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Bird Dog', video: 'https://www.shutterstock.com/shutterstock/videos/1100043715/preview/stock-footage-bird-dog-yoga-stretch-fitness-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Rack Pulls', video: 'https://www.shutterstock.com/shutterstock/videos/1104312861/preview/stock-footage-barbell-rack-pull-powerlifting-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Reverse Hyperextensions', video: ' ' },
+            { name: 'Kettlebell Swings', video: 'https://www.shutterstock.com/shutterstock/videos/1100043743/preview/stock-footage-kettlebell-swing-version-fitness-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Bridges', video: 'https://www.shutterstock.com/shutterstock/videos/1100779449/preview/stock-footage-barbell-kas-glute-bridge-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm ' },
+            { name: 'Cable Pull-through', video: 'https://www.shutterstock.com/shutterstock/videos/1100779525/preview/stock-footage-cable-pull-through-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' }
+        ]
+    },
+
+    quads: {
+       exercises: [
+            { name: 'Dumbbell Squats', video: 'https://www.shutterstock.com/shutterstock/videos/1100873177/preview/stock-footage-dumbbell-goblet-squat-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Lunges', video: 'https://www.shutterstock.com/shutterstock/videos/1100779505/preview/stock-footage-dumbbell-static-lunge-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Leg Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100682269/preview/stock-footage-incline-degree-leg-press-machine-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Bulgarian Split Squat', video: 'https://www.shutterstock.com/shutterstock/videos/1100779447/preview/stock-footage-dumbbell-bulgarian-split-squat-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Front Squat', video: 'https://www.shutterstock.com/shutterstock/videos/1104312873/preview/stock-footage-barbell-clean-grip-front-squat-powerlifting-fitness-exercise-workout-animation-male-muscle.webm ' },
+            { name: 'Step-ups', video: 'https://www.shutterstock.com/shutterstock/videos/1100873127/preview/stock-footage-dumbbell-step-up-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Sissy Squat', video: 'https://www.shutterstock.com/shutterstock/videos/1100779547/preview/stock-footage-bodyweight-kneeling-sissy-squat-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Box Jumps', video: 'https://www.shutterstock.com/shutterstock/videos/1100682349/preview/stock-footage-box-jump-squats-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Goblet Squat', video: 'https://www.shutterstock.com/shutterstock/videos/1100682405/preview/stock-footage-goblet-squats-dumbbells-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm ' },
+            { name: 'Pistol Squat', video: 'https://www.shutterstock.com/shutterstock/videos/1100043713/preview/stock-footage-dumbbell-single-leg-squat-with-support-pistol-fitness-workout-animation-male-muscle-highlight.webm ' }
+        ]
+    },
+    hamstrings: {
+       exercises: [
+            { name: 'Romanian Deadlift (Barbell)', video: 'https://www.shutterstock.com/shutterstock/videos/1104342933/preview/stock-footage-romanian-deadlift-barbell-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm ' },
+            { name: 'Leg Curls (Machine)', video: 'https://www.shutterstock.com/video/clip-1100682265-lying-leg-curl-machine-fitness-exercise-workout ' },
+            { name: 'Stiff-leg Deadlifts', video: 'https://www.shutterstock.com/video/clip-1100873125-dumbbell-stiff-leg-deadlift-fitness-exercise-workout ' },
+            { name: 'Glute Ham Raise', video: ' ' },
+            { name: 'Good Mornings', video: 'https://www.shutterstock.com/shutterstock/videos/1104380873/preview/stock-footage-barbell-good-morning-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Single-leg Deadlifts', video: 'https://www.shutterstock.com/shutterstock/videos/1104380893/preview/stock-footage-barbell-single-leg-deadlift-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm ' },
+            { name: 'Kettlebell Swings', video: 'https://www.shutterstock.com/shutterstock/videos/1104312907/preview/stock-footage-kettlebell-swing-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Nordic Hamstring Curl', video: ' ' },
+            { name: 'Reverse Lunge', video: 'https://www.shutterstock.com/shutterstock/videos/1100779457/preview/stock-footage-reverse-lunge-left-resistance-band-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Dumbbell Step-ups', video: 'https://www.shutterstock.com/shutterstock/videos/1100873149/preview/stock-footage-dumbbell-step-up-on-bench-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at.webm ' }
+        ]
+    },
+    glutes: {
+       exercises: [
+            { name: 'Hip Thrusts', video: 'https://www.shutterstock.com/shutterstock/videos/1100873139/preview/stock-footage-dumbbell-hip-thrust-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Glute Bridges', video: 'https://www.shutterstock.com/shutterstock/videos/1100779419/preview/stock-footage-barbell-glute-bridge-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Cable Kickbacks', video: 'https://www.shutterstock.com/shutterstock/videos/1100043747/preview/stock-footage-tricep-cable-kickback-on-crossover-machine-fitness-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Step-ups', video: 'https://www.shutterstock.com/shutterstock/videos/1100873179/preview/stock-footage-bodyweight-step-up-on-step-box-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Bulgarian Split Squat', video: 'https://www.shutterstock.com/shutterstock/videos/1100873171/preview/stock-footage-barbell-bulgarian-split-squat-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Reverse Hyperextensions', video: ' ' },
+            { name: 'Squat to Press', video: 'https://www.shutterstock.com/shutterstock/videos/1100779467/preview/stock-footage-dumbbell-press-squat-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Kettlebell Swing', video: 'https://www.shutterstock.com/shutterstock/videos/1104312907/preview/stock-footage-kettlebell-swing-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Single-leg Hip Thrust', video: ' ' },
+            { name: 'Side Lunges', video: 'https://www.shutterstock.com/shutterstock/videos/1100779413/preview/stock-footage-dumbbell-side-squat-side-to-side-fitness-exercise-workout-animation-male-muscle-highlight.webm ' }
+        ]
+    },
+    calves: {
+       exercises: [
+            { name: 'Standing Calf Raise', video: 'https://www.shutterstock.com/shutterstock/videos/1100779499/preview/stock-footage-bodyweight-standing-calf-raise-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Seated Calf Raise', video: 'https://www.shutterstock.com/shutterstock/videos/1100682231/preview/stock-footage-seated-calf-raises-dumbbell-on-knee-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Donkey Calf Raise', video: 'https://www.shutterstock.com/shutterstock/videos/1100873181/preview/stock-footage-donkey-calf-raise-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Calf Press on Leg Press Machine', video: 'https://www.shutterstock.com/shutterstock/videos/1100682283/preview/stock-footage-calf-raise-leg-press-machine-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm ' },
+            { name: 'Single-leg Calf Raise', video: 'https://www.shutterstock.com/shutterstock/videos/1100873131/preview/stock-footage-dumbbell-standing-single-leg-calf-raise-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Jump Rope', video: 'https://www.shutterstock.com/shutterstock/videos/1104096621/preview/stock-footage-jump-rope-alternating-foot-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm ' },
+            { name: 'Box Jumps', video: 'https://www.shutterstock.com/shutterstock/videos/1100682349/preview/stock-footage-box-jump-squats-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Farmer’s Walk on Toes', video: ' ' },
+            { name: 'Sprinting', video: 'https://www.shutterstock.com/shutterstock/videos/1104312939/preview/stock-footage-downward-dog-sprint-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Standing Barbell Calf Raise', video: 'https://www.shutterstock.com/shutterstock/videos/1100779481/preview/stock-footage-barbell-standing-leg-calf-raises-fitness-exercise-workout-animation-male-muscle-highlight.webm ' }
+        ]
+    },
+
+    fullBody: {
+       exercises: [
+            { name: 'Dumbbell Deadlifts ', video: 'https://www.shutterstock.com/shutterstock/videos/1104342995/preview/stock-footage-dumbbell-romanian-deadlift-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm ' },
+            { name: 'Squats (Front)', video: 'https://www.shutterstock.com/shutterstock/videos/1100779491/preview/stock-footage-barbell-front-squats-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Burpees', video: 'https://www.shutterstock.com/shutterstock/videos/1104312987/preview/stock-footage-burpee-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k-resolution.webm ' },
+            { name: 'Kettlebell Swings', video: 'https://www.shutterstock.com/shutterstock/videos/1104312907/preview/stock-footage-kettlebell-swing-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Clean and Press', video: 'https://www.shutterstock.com/shutterstock/videos/1104312881/preview/stock-footage-barbell-clean-and-press-powerlifting-fitness-exercise-workout-animation-male-muscle-highlight.webm ' },
+            { name: 'Thrusters ', video: 'https://www.shutterstock.com/shutterstock/videos/1104312851/preview/stock-footage-barbell-thruster-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Snatch ', video: 'https://www.shutterstock.com/shutterstock/videos/1104312857/preview/stock-footage-barbell-snatch-powerlifting-fitness-exercise-workout-animation-male-muscle-highlight-demonstration.webm ' },
+            { name: 'Mountain Climbers', video: 'https://www.shutterstock.com/shutterstock/videos/1098699499/preview/stock-footage-mountain-climbers-fitness-exercise-workout-animation-male-muscle-highlight-demonstration-at-k.webm ' },
+            { name: 'Battle Ropes', video: ' ' },
+            { name: 'Rowing Machine', video: 'https://www.shutterstock.com/shutterstock/videos/1104342925/preview/stock-footage-seated-normal-grip-row-machine-fitness-exercise-workout-animation-male-muscle-highlight.webm ' }
+        ]
+    },
+};
+
+
+        var exerciseDetails = exercises[exercise];
+        if (exerciseDetails) {
+            var tableHtml = '<table class="exercise-table"><tbody>';
+            exerciseDetails.exercises.forEach(function (ex) {
+                tableHtml += '<tr><td>' + ex.name + '</td>' +
+                             '<td><video class="exercise-video" controls><source src="' + ex.video + '" type="video/mp4">Your browser does not support the video tag.</video></td>' +
+                             '<td><button class="btn-s" onclick="addExercise(\'' + ex.name + '\', \'' + ex.video + '\')">Add</button></td></tr>';
+            });
+            tableHtml += '</tbody></table>';
+            document.getElementById('exerciseDetails').innerHTML = tableHtml;
+
+            // Call the function to observe videos
+            observeVideos();
+        }
+    }
+
+    // Function to observe videos for autoplay
+function observeVideos() {
+    const videos = document.querySelectorAll('.exercise-video');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+
+            if (entry.isIntersecting) {
+                // Play the video when it comes into view
+                video.play();
+            } else {
+                // Pause the video when it goes out of view
+                video.pause();
+            }
+        });
+    });
+
+    videos.forEach(video => {
+        // Play the video again from the start when it ends
+        video.addEventListener('ended', () => {
+            video.currentTime = 0; // Reset to start
+            video.play(); // Play again
+        });
+
+        observer.observe(video); // Observe the video
+    });
+}
+
+
+    // Function to handle adding an exercise
+function addExercise(exerciseName, exerciseVideoLink) {
+    // Get the table body of the "Assigned Workouts" table
+    const tableBody = document.querySelector('.left-column table tbody');
+
+    // Create a new row for the exercise
+    const newRow = document.createElement('tr');
+
+    // Create the cells for the exercise, reps, sets, and description
+    const workoutCell = document.createElement('td');
+    workoutCell.textContent = exerciseName; // Add the exercise name
+
+    // Make the reps cell editable
+    const repsCell = document.createElement('td');
+    repsCell.textContent = '0'; // Default value for reps
+    repsCell.contentEditable = true; // Allow inline editing
+
+    // Make the sets cell editable
+    const setsCell = document.createElement('td');
+    setsCell.textContent = '0'; // Default value for sets
+    setsCell.contentEditable = true; // Allow inline editing
+
+    // Make the description cell editable
+    const descriptionCell = document.createElement('td');
+    descriptionCell.textContent = '-'; // Default description
+    descriptionCell.contentEditable = true; // Allow inline editing
+
+    // Create a hidden input for the exercise video link
+    const videoLinkInput = document.createElement('input');
+    videoLinkInput.type = 'hidden';
+    videoLinkInput.value = exerciseVideoLink; // Add the exercise video link
+
+    // Create the Cancel button
+    const cancelButtonCell = document.createElement('td');
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel'; // Button label
+    cancelButton.className = 'cancel-button'; // Optional: add a class for styling
+    cancelButton.onclick = function() {
+        tableBody.removeChild(newRow); // Remove the row when the button is clicked
+    };
+
+    // Append all cells to the new row
+    newRow.appendChild(workoutCell);
+    newRow.appendChild(repsCell);
+    newRow.appendChild(setsCell);
+    newRow.appendChild(descriptionCell);
+    newRow.appendChild(videoLinkInput);
+    cancelButtonCell.appendChild(cancelButton); // Append the button to its cell
+    newRow.appendChild(cancelButtonCell); // Append the cell with the button to the row
+
+    // Append the new row to the table body
+    tableBody.appendChild(newRow);
+}
+
+
+
+
+  function submitWorkouts(event) {
+    event.preventDefault();
+
+    const tableBody = document.querySelector('.left-column table tbody');
+    const rows = tableBody.querySelectorAll('tr');
+    const workouts = [];
+
+    rows.forEach(row => {
+        const workout = {
+            workoutName: row.cells[0].textContent,
+            reps: parseInt(row.cells[1].textContent) || 0,
+            sets: parseInt(row.cells[2].textContent) || 0,
+            description: row.cells[3].textContent,
+            videoLink: row.querySelector('input[type="hidden"]').value
+        };
+        workouts.push(workout);
+    });
+
+    const bookingId = document.getElementById('booking-id').value;
+
+    fetch(`/workouts/assign?bookingId=${bookingId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(workouts)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to assign workouts');
+        }
+        return response.json(); // Expect JSON response from server
+    })
+    .then(data => {
+        displayMessage('success', data.message || 'Workouts assigned successfully');
+    })
+    .catch(error => {
+        console.error('Error assigning workouts:', error);
+        displayMessage('error', error.message || 'An error occurred while assigning workouts');
+    });
+}
+
+function displayMessage(type, message) {
+    const successMessageDiv = document.getElementById('successMessage');
+    const errorMessageDiv = document.getElementById('errorMessage');
+
+    if (type === 'success') {
+        successMessageDiv.textContent = message;
+        successMessageDiv.classList.add('show');
+        successMessageDiv.style.display = 'block';
+        errorMessageDiv.style.display = 'none';
+    } else if (type === 'error') {
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.classList.add('show');
+        errorMessageDiv.style.display = 'block';
+        successMessageDiv.style.display = 'none';
+    }
+
+    setTimeout(() => {
+        successMessageDiv.classList.add('hide');
+        errorMessageDiv.classList.add('hide');
+
+        setTimeout(() => {
+            successMessageDiv.style.display = 'none';
+            errorMessageDiv.style.display = 'none';
+            successMessageDiv.classList.remove('show', 'hide');
+            errorMessageDiv.classList.remove('show', 'hide');
+        }, 500); // Matches the fade-out duration
+    }, 5500);
+}
+
+
+</script>
+
+</body>
+</html>

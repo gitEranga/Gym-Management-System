@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/admin/dashboardAdmin.css}">
+    <style>
+        /* Place the updated CSS here */
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/admin/admin_dashboard}">HOME</a></li>
+            <li><a th:href="@{/admin/coaches_details}">COACHES</a></li>
+            <li><a href="#">ATTENDANCE</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <p>Coaches</p>
+        <p>Assign a coach for personalized guidance</p>
+
+        <div class="form-container">
+            <div class="search">
+                <form action="/admin/coach_details/search" method="post">
+                    <input class="search-input" type="search" id="userName" name="userName" placeholder="Search by User Name">
+                    <button type="submit" class="btn-s">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-container">
+            <div class="table-header">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Gender</th>
+                        <th>User Name</th>
+                        <th>Contact Number</th>
+                        <th>Other Details</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table-body">
+                <div class="table-scroll">
+                    <table>
+                        <tbody>
+                        <th:block th:each="coach : ${coaches}">
+                            <tr>
+                                <td th:text="${coach.fullName}"></td>
+                                <td th:text="${coach.gender}"></td>
+                                <td th:text="${coach.userName}"></td>
+                                <td th:text="${coach.contactNumber}"></td>
+                                <td>
+                                    <button type="button" class="btn-view"
+                                            th:data-fullname="${coach.fullName}"
+                                            th:data-gender="${coach.gender}"
+                                            th:data-username="${coach.userName}"
+                                            th:data-contactnumber="${coach.contactNumber}"
+                                            th:data-address="${coach.address}"
+                                            th:data-experienceyears="${coach.experienceYears}"
+                                            th:data-experiencehistory="${coach.experienceHistory}"
+                                            onclick="openModal(this)"
+                                    >
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Structure -->
+<div id="coachDetailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Coach Details</h2>
+        <p><strong>Full Name:</strong> <span id="modalFullName"></span></p>
+        <p><strong>Gender:</strong> <span id="modalGender"></span></p>
+        <p><strong>User Name:</strong> <span id="modalUserName"></span></p>
+        <p><strong>Contact Number:</strong> <span id="modalContactNumber"></span></p>
+        <p><strong>Address:</strong> <span id="modalAddress"></span></p>
+        <p><strong>Years of Experience:</strong> <span id="modalExperienceYears"></span></p>
+        <p><strong>Experience History:</strong> <span id="modalExperienceHistory"></span></p>
+    </div>
+</div>
+
+<script>
+    // Function to open modal and set coach details
+    function openModal(button) {
+        var fullName = button.getAttribute('data-fullname');
+        var gender = button.getAttribute('data-gender');
+        var userName = button.getAttribute('data-username');
+        var contactNumber = button.getAttribute('data-contactnumber');
+        var address = button.getAttribute('data-address');
+        var experienceYears = button.getAttribute('data-experienceyears');
+        var experienceHistory = button.getAttribute('data-experiencehistory');
+
+        document.getElementById("modalFullName").textContent = fullName;
+        document.getElementById("modalGender").textContent = gender;
+        document.getElementById("modalUserName").textContent = userName;
+        document.getElementById("modalContactNumber").textContent = contactNumber;
+        document.getElementById("modalAddress").textContent = address;
+        document.getElementById("modalExperienceYears").textContent = experienceYears;
+        document.getElementById("modalExperienceHistory").textContent = experienceHistory;
+
+        var modal = document.getElementById("coachDetailsModal");
+        modal.classList.add("show"); // Show the modal
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        var modal = document.getElementById("coachDetailsModal");
+        modal.classList.remove("show"); // Hide the modal
+    }
+
+    // Close the modal when clicking the close button
+    document.querySelector(".close").onclick = closeModal;
+
+    // Close the modal when clicking outside the modal content
+    window.onclick = function(event) {
+        var modal = document.getElementById("coachDetailsModal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+</script>
+</body>
+</html>

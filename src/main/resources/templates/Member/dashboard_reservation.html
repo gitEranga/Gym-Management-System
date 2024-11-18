@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/member/dashboardMember.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/member/dashboard}">HOME</a></li>
+            <li><a th:href="@{/member/dashboard_reservation}">RESERVATION</a></li>
+            <li><a th:href="@{/member/history/page}">HISTORY</a></li>
+            <li><a href="#">DAILY REPORTS</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+
+        </ul>
+    </nav>
+
+    <main class="content">
+        <div>
+            <div class="form-group">
+                <label for="scheduleDate">Please schedule your date:</label>
+                <div class="date-section">
+                    <input type="date" id="scheduleDate" class="date-picker">
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="alert alert-success" style="display: none;"></div>
+
+            <!-- Error Message -->
+            <div class="alert alert-danger" style="display: none;"></div>
+
+
+            <h4>Please select your reservation</h4>
+            <div class="seat-legend">
+                <span class="legend-box red"></span><span class="legend-text">Already Reserved</span>
+                <span class="legend-box green"></span><span class="legend-text">Reservation Available</span>
+            </div>
+            <div class="seat-map">
+                <!-- Seat buttons -->
+                <div class="row mb-2">
+                    <div class="col">
+                        <label class="time-text">10.00am - 01.00pm</label>
+                        <button id="seat-1" class="btn seat-btn available" data-seat="1">1</button>
+                        <button id="seat-2" class="btn seat-btn available" data-seat="2">2</button>
+                        <button id="seat-3" class="btn seat-btn available" data-seat="3">3</button>
+                        <button id="seat-4" class="btn seat-btn available" data-seat="4">4</button>
+                        <button id="seat-5" class="btn seat-btn available" data-seat="5">5</button>
+                        <span style="margin-right: 20px;"></span>
+                        <button id="seat-6" class="btn seat-btn available" data-seat="6">6</button>
+                        <button id="seat-7" class="btn seat-btn available" data-seat="7">7</button>
+                        <button id="seat-8" class="btn seat-btn available" data-seat="8">8</button>
+                        <button id="seat-9" class="btn seat-btn available" data-seat="9">9</button>
+                        <button id="seat-10" class="btn seat-btn available" data-seat="10">10</button>
+                    </div>
+                </div>
+                <!-- Additional rows for seats here -->
+                <div class="row mb-2">
+                    <div class="col">
+                        <label class="time-text">01.00am - 05.00pm</label>
+                        <button id="seat-11" class="btn seat-btn available" data-seat="11">11</button>
+                        <button id="seat-12" class="btn seat-btn available" data-seat="12">12</button>
+                        <button id="seat-13" class="btn seat-btn available" data-seat="13">13</button>
+                        <button id="seat-14" class="btn seat-btn available" data-seat="14">14</button>
+                        <button id="seat-15" class="btn seat-btn available" data-seat="15">15</button>
+                        <span style="margin-right: 20px;"></span>
+                        <button id="seat-16" class="btn seat-btn available" data-seat="16">16</button>
+                        <button id="seat-17" class="btn seat-btn available" data-seat="17">17</button>
+                        <button id="seat-18" class="btn seat-btn available" data-seat="18">18</button>
+                        <button id="seat-19" class="btn seat-btn available" data-seat="19">19</button>
+                        <button id="seat-20" class="btn seat-btn available" data-seat="20">20</button>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <label class="time-text">05.00am - 08.00pm</label>
+                        <button id="seat-21" class="btn seat-btn available" data-seat="21">21</button>
+                        <button id="seat-22" class="btn seat-btn available" data-seat="22">22</button>
+                        <button id="seat-23" class="btn seat-btn available" data-seat="23">23</button>
+                        <button id="seat-24" class="btn seat-btn available" data-seat="24">24</button>
+                        <button id="seat-25" class="btn seat-btn available" data-seat="25">25</button>
+                        <span style="margin-right: 20px;"></span>
+                        <button id="seat-26" class="btn seat-btn available" data-seat="26">26</button>
+                        <button id="seat-27" class="btn seat-btn available" data-seat="27">27</button>
+                        <button id="seat-28" class="btn seat-btn available" data-seat="28">28</button>
+                        <button id="seat-29" class="btn seat-btn available" data-seat="29">29</button>
+                        <button id="seat-30" class="btn seat-btn available" data-seat="30">30</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book Seat Button -->
+            <div class="row">
+                <div class="col text-center">
+                    <button id="reserveBtn" class="btn book-seat-btn">Reserve</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const reserveBtn = document.querySelector('.book-seat-btn');
+    const scheduleDateInput = document.getElementById('scheduleDate');
+    let selectedSeat = null;
+
+    // Function to fetch and update seat statuses
+    function updateSeatStatuses() {
+        const date = scheduleDateInput.value;
+        if (date) {
+            fetch(`/reservations/date?date=${date}`, {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(reservations => {
+                // Update seat colors based on the reservations
+                document.querySelectorAll('.seat-btn').forEach(button => {
+                    const seatNumber = button.dataset.seat;
+                    if (reservations.some(reservation => reservation.reservationNumber == seatNumber)) {
+                        button.classList.remove('available');
+                        button.classList.add('red');
+                    } else {
+                        button.classList.remove('red');
+                        button.classList.add('available');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching seat statuses:', error);
+            });
+        }
+    }
+
+    // Event listener for date change to update seat statuses
+    scheduleDateInput.addEventListener('change', () => {
+        updateSeatStatuses();
+    });
+
+    // Initialize seat statuses on page load if there's a date selected
+    if (scheduleDateInput.value) {
+        updateSeatStatuses();
+    }
+
+ // Event listener for reserve button
+reserveBtn.addEventListener('click', () => {
+    if (selectedSeat && scheduleDateInput.value) {
+        const seatNumber = selectedSeat.dataset.seat;
+        const date = scheduleDateInput.value;
+
+        fetch(`/reservations/book?date=${date}&reservationNumber=${seatNumber}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mark the seat as booked
+                selectedSeat.classList.remove('available');
+                selectedSeat.classList.add('red');
+                displayMessage('success', 'Reservation successfully done.');
+
+                // Prepare parameters for the PDF generation
+                const params = new URLSearchParams({
+                    reservationNumber: seatNumber,
+                    scheduleDate: date,
+                    userName: data.userName,
+                    fullName: data.fullName,
+                    contactNumber: data.contactNumber
+                }).toString();
+
+                // Redirect to /pdf page with the reservation details
+                setTimeout(() => {
+                    window.location.href = `/pdf?${params}`;
+                }, 500);
+            } else {
+                displayMessage('error', data.message);
+            }
+        })
+        .catch(error => {
+            displayMessage('error', 'An error occurred while booking the seat.');
+        });
+    } else {
+        displayMessage('error', 'Please select a seat and date.');
+    }
+});
+
+
+
+
+    // Error message
+    function displayMessage(type, message) {
+        const successMessageDiv = document.querySelector('.alert-success');
+        const errorMessageDiv = document.querySelector('.alert-danger');
+
+        if (type === 'success') {
+            successMessageDiv.textContent = message;
+            successMessageDiv.style.display = 'block';
+            errorMessageDiv.style.display = 'none';
+        } else if (type === 'error') {
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.style.display = 'block';
+            successMessageDiv.style.display = 'none';
+        }
+
+        setTimeout(() => {
+            successMessageDiv.style.display = 'none';
+            errorMessageDiv.style.display = 'none';
+        }, 5500); // Hide messages after 5.5 seconds
+    }
+
+    // Event listeners for seat selection
+    document.querySelectorAll('.seat-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('available')) {
+                if (selectedSeat) {
+                    selectedSeat.classList.remove('selected');
+                }
+                selectedSeat = button;
+                selectedSeat.classList.add('selected');
+            }
+        });
+    });
+});
+
+</script>
+
+</body>
+</html>

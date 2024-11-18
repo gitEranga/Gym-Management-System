@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" th:href="@{/css/admin/registration.css}">
+</head>
+<body>
+<div class="registration-form">
+    <div class="form-header">
+        <div class="logo">LOGO</div>
+        <div class="title">
+            <h1>REGISTRATION</h1>
+            <p>Manage new gym memberships and track member progress.<br>Please complete the form to register.</p>
+        </div>
+    </div>
+    <form th:action="@{/admin/register}" th:object="${admin}" method="post">
+        <div class="form-group">
+            <label for="first-name">Full Name :</label>
+            <input type="text" th:field="*{fullName}" class="form-control" id="first-name" placeholder="Full Name">
+        </div>
+        <div class="form-group">
+            <label for="last-name">User Name :</label>
+            <input type="text" th:field="*{userName}" class="form-control" id="last-name" placeholder="User Name">
+        </div>
+        <div class="form-group">
+            <label for="mobile">Contact Number :</label>
+            <input type="text" th:field="*{contactNumber}" class="form-control" id="mobile" placeholder="Contact Number">
+        </div>
+        <div class="form-group">
+            <label for="address">Address :</label>
+            <input type="text" th:field="*{address}" class="form-control" id="address" placeholder="Address">
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender :</label>
+            <div class="gender-options">
+                <input type="radio" th:field="*{gender}" value="Male" id="male" name="gender">
+                <label for="male">Male</label>
+                <input type="radio" th:field="*{gender}" value="Female" id="female" name="gender">
+                <label for="female">Female</label>
+                <input type="radio" th:field="*{gender}" value="Other" id="other" name="gender">
+                <label for="other">Other</label>
+            </div>
+        </div>
+
+        <br>
+        <div class="form-group">
+            <label for="password">Password :</label>
+            <input type="text" th:field="*{password}" class="form-control" id="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password :</label>
+            <input type="text" name="confirmPassword" class="form-control" id="confirm-password" placeholder="Confirm Password">
+        </div>
+
+        <div class="form-footer">
+            <p>Already have an account? <a th:href="@{/admin/login}">LOGIN HERE</a></p>
+            <button type="submit" class="reg-btn">Register</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

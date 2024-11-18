@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Workouts</title>
+    <link rel="stylesheet" th:href="@{/css/coach/dailyWorkouts.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+
+<main class="content">
+    <div class="scroll-container">
+        <button class="scroll-btn left" onclick="scrollLeft()">&#9664;</button> <!-- Left Arrow -->
+        <div class="workouts-container">
+            <div th:each="entry : ${groupedWorkouts}" class="workout-card">
+                <div class="card-header">
+                    <h2>Schedule Date: <span th:text="${entry.key.split('-')[1]}"></span></h2>
+                    <h4>Booking ID: <span th:text="${entry.key.split('-')[0]}"></span></h4>
+                </div>
+                <div class="workout-details">
+                    <!-- Headers for workout details -->
+                    <div class="detail-item"><strong>Workout Name</strong></div>
+                    <div class="detail-item"><strong>Reps</strong></div>
+                    <div class="detail-item"><strong>Sets</strong></div>
+                    <div class="detail-item"><strong>Description</strong></div>
+                    <div class="detail-item"><strong>Video</strong></div>
+
+                    <!-- Display each workout's details in a single row -->
+                    <div th:each="workout : ${entry.value}" class="detail-row">
+                        <div class="detail-item" th:text="${workout.workoutName}"></div>
+                        <div class="detail-item" th:text="${workout.reps}"></div>
+                        <div class="detail-item" th:text="${workout.sets}"></div>
+                        <div class="detail-item" th:text="${workout.description}"></div>
+                        <div class="detail-item">
+                            <video class="workout-video" controls loop>
+                                <source th:src="${workout.videoLink}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="scroll-btn right" onclick="scrollRight()">&#9654;</button> <!-- Right Arrow -->
+    </div>
+</main>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const videos = document.querySelectorAll('.workout-video');
+
+        const options = {
+            root: null, // use the viewport as the container
+            rootMargin: '0px',
+            threshold: 0.5 // trigger when 50% of the video is visible
+        };
+
+        const callback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Play the video
+                    entry.target.play();
+                } else {
+                    // Pause the video when it leaves the viewport
+                    entry.target.pause();
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(callback, options);
+        videos.forEach(video => {
+            observer.observe(video);
+        });
+    });
+
+
+
+   function scrollLeft() {
+        const container = document.querySelector('.workouts-container');
+        const cardWidth = container.querySelector('.workout-card').offsetWidth + 20; // +20 for the gap
+        container.scrollBy({
+            top: 0,
+            left: -cardWidth, // Adjust to the width of the cards
+            behavior: 'smooth'
+        });
+    }
+
+    function scrollRight() {
+        const container = document.querySelector('.workouts-container');
+        const cardWidth = container.querySelector('.workout-card').offsetWidth + 20; // +20 for the gap
+        container.scrollBy({
+            top: 0,
+            left: cardWidth, // Adjust to the width of the cards
+            behavior: 'smooth'
+        });
+    }
+
+</script>
+
+</body>
+</html>
