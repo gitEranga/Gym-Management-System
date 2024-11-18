@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <link rel="stylesheet" th:href="@{/css/member/history.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="Gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/member/dashboard}">HOME</a></li>
+            <li><a th:href="@{/member/dashboard_reservation}">RESERVATION</a></li>
+            <li><a th:href="@{/member/history/page}">HISTORY</a></li>
+            <li><a href="#">DAILY REPORTS</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <p>Reservations Overview</p>
+        <p>Please enter a date to check your history :<p>
+
+        <!--- Search Date Section ----->
+        <div class="form-group">
+
+            <div class="date-section">
+                <input type="date" id="scheduleDate" class="date-picker"
+                       th:value="${scheduleDate}"
+                       onchange="filterByDate()">
+            </div>
+        </div>
+
+        <!-- Main Section with Future and Past Bookings -->
+        <div class="bookings-container">
+            <!-- Future Bookings Table -->
+            <div class="future-bookings">
+                <h2>Future Reservations</h2>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Reservation ID</th>
+                            <th>Reserved Date</th>
+                            <th>Reservation Number</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="futureBooking : ${futureBookings}">
+                            <tr>
+                                <td th:text="${futureBooking.id}"></td>
+                                <td th:text="${futureBooking.scheduleDate}"></td>
+                                <td th:text="${futureBooking.reservationNumber}"></td>
+                                <td>
+                                    <form th:action="@{/member/booking/cancel}" method="post">
+                                        <input type="hidden" name="bookingId" th:value="${futureBooking.id}" />
+                                        <button type="submit" class="btn cancel-btn">Cancel</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Past Bookings Table -->
+            <div class="past-bookings">
+                <h2>Past Reservations</h2>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Reservation ID</th>
+                            <th>Reserved Date</th>
+                            <th>Reservation Number</th>
+                            <th>Attendance</th>
+                        </tr>
+                        </thead>
+                        <div class="table-body-scroll">
+                            <tbody>
+
+                            <th:block th:each="pastBooking : ${pastBookings}">
+                                <tr>
+                                    <td th:text="${pastBooking.id}"></td>
+                                    <td th:text="${pastBooking.scheduleDate}"></td>
+                                    <td th:text="${pastBooking.reservationNumber}"></td>
+                                    <td th:text="${pastBooking.attendance ? 'Present' : 'Absent'}"></td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </div>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+
+    <script>
+        function filterByDate() {
+            const date = document.getElementById('scheduleDate').value;
+            window.location.href = '/member/history/page?scheduleDate=' + date;
+        }
+
+
+    </script>
+
+</body>
+</html>

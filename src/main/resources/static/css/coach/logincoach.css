@@ -1,0 +1,98 @@
+/* General body styles */
+body {
+    background-image: url('/images/img11.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Container to center the card */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+/* Card styles for the form */
+.card {
+    background-color: rgba(217, 217, 217, 0.67);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 2);
+    width: 400px;
+    text-align: center;
+}
+
+/* Logo styles */
+.logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+/* Form group and control styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 90%;
+    padding: 15px;
+    margin-right: 10px;
+    margin-left:10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(135deg, #020202 0%, #686060 100%);
+    color: white;
+    font-size: 16px;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Button styles */
+.btn {
+    width: 50%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #020202 0%, #686060 100%);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #555;
+}
+
+/* Error message styling */
+.error-message {
+    color: #b10808;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Register text and link styles */
+.register-text {
+    margin-top: 20px;
+}
+
+.register-link {
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}

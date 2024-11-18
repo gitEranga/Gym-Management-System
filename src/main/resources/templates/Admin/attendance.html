@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <link rel="stylesheet" th:href="@{/css/admin/dashboardAdmin.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/admin/admin_dashboard}">HOME</a></li>
+            <li><a th:href="@{/admin/coaches_details}">COACHES</a></li>
+            <li><a th:href="@{/admin/attendance}">ATTENDANCE</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+
+
+        </ul>
+    </nav>
+
+    <main class="content">
+        <!---Search Date Section----->
+        <div class="form-group">
+            <label for="scheduleDate">Please enter a date to check bookings :</label>
+            <div class="date-section">
+                <input type="date" id="scheduleDate" class="date-picker"
+                       th:value="${scheduleDate}"
+                       onchange="filterByDate()">
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="search">
+                <form action="/admin/attendance/search" method="post">
+                    <input class="search-input" type="search" id="userName" name="userName" placeholder="Search by User Name">
+                    <button type="submit" class="btn-s">Search</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <!---Table Section------>
+        <div class="table-container">
+            <div class="table-header">
+
+                <form th:action="@{/admin/markAttendance}" method="post">
+                    <div class="button_container">
+                        <button type="submit" class="attendance-btn">Mark Attendance</button>
+                    </div>
+
+
+
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Booking Id</th>
+                            <th>Booked Date</th>
+                            <th>Reservation Number</th>
+                            <th>User Name</th>
+                            <th>Attendance</th>
+                        </tr>
+                        </thead>
+                    </table>
+            </div>
+            <div class="table-body">
+                <div class="table-scroll">
+                    <table>
+                        <tbody>
+                        <th:block th:each="booking : ${bookings}">
+                            <tr>
+                                <td th:text="${booking.id}"></td>
+                                <td th:text="${booking.scheduleDate}"></td>
+                                <td th:text="${booking.reservationNumber}"></td>
+                                <td th:text="${booking.userName}"></td>
+                                <td>
+                                    <!-- Show checkbox only for today's bookings -->
+                                    <th:block th:if="${booking.scheduleDate.isEqual(T(java.time.LocalDate).now())}">
+                                        <input type="checkbox" th:checked="${booking.attendance}" th:name="'attendance_' + ${booking.id}" />
+                                    </th:block>
+                                    <!-- For past and future bookings, show 'N/A' -->
+                                    <th:block th:if="${!booking.scheduleDate.isEqual(T(java.time.LocalDate).now())}">
+                                        N/A
+                                    </th:block>
+                                </td>
+
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            </form>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    function filterByDate() {
+        const date = document.getElementById('scheduleDate').value;
+        window.location.href = '/admin/attendance?scheduleDate=' + date;
+    }
+</script>
+
+
+</body>
+</html>

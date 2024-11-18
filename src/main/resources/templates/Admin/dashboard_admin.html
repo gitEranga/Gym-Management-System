@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/admin/dashboardAdmin.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/admin/admin_dashboard}">HOME</a></li>
+            <li><a th:href="@{/admin/coaches_details}">COACHES</a></li>
+            <li><a th:href="@{/admin/attendance}">ATTENDANCE</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+
+
+        </ul>
+    </nav>
+
+    <main class="content">
+        <!---Search Date Section----->
+        <div class="form-group">
+            <label for="scheduleDate">Please enter a date to check bookings :</label>
+            <div class="date-section">
+                <input type="date" id="scheduleDate" class="date-picker"
+                       th:value="${scheduleDate}"
+                       onchange="filterByDate()">
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="search">
+                <form action="/admin/admin_dashboard/search" method="post">
+                    <input class="search-input" type="search" id="userName" name="userName" placeholder="Search by User Name">
+                    <button type="submit" class="btn-s">Search</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <!---Table Section------>
+        <div class="table-container">
+            <div class="table-header">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Booking Id</th>
+                        <th>Booked Date</th>
+                        <th>Reservation Number</th>
+                        <th>Full Name</th>
+                        <th>User Name</th>
+                        <th>Contact Number</th>
+                        <th>Other Details</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="table-body">
+                <div class="table-scroll">
+                    <table>
+                        <tbody>
+                        <th:block th:each="booking : ${bookings}">
+                            <tr>
+                                <td th:text="${booking.id}"></td>
+                                <td th:text="${booking.scheduleDate}"></td>
+                                <td th:text="${booking.reservationNumber}"></td>
+                                <td th:text="${booking.fullName}"></td>
+                                <td th:text="${booking.userName}"></td>
+                                <td th:text="${booking.contactNumber}"></td>
+                                <td>
+                                    <form action="/admin/member_details" method="post">
+                                        <input type="hidden" name="userName" th:value="${booking.userName}">
+                                        <input type="hidden" name="id" th:value="${booking.id}">
+                                        <button type="submit" class="btn-view">View</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    function filterByDate() {
+        const date = document.getElementById('scheduleDate').value;
+        window.location.href = '/admin/admin_dashboard?scheduleDate=' + date;
+    }
+</script>
+
+
+</body>
+</html>

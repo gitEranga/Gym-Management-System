@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/admin/memberDetails.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+<div class="container">
+
+    <th:block th:each="member : ${members}">
+
+        <!-- Back button as an anchor -->
+        <p><a th:href="@{/admin/admin_dashboard}" class="btn-view">Back</a></p>
+
+        <div class="profile-card">
+            <div class="left-section">
+                <div class="avatar">
+                    <img th:src="@{/images/man.png}" alt="Avatar">
+                </div>
+                <h2 th:text="${member.userName}"></h2>
+                <p><strong>Username :  </strong><span th:text="${member.fullName}"></span></p>
+                <p><strong>Contact Number :  </strong><span th:text="${member.contactNumber}"></span></p>
+                <p><strong>Member ID :  </strong><span th:text="${member.memberId}"></span></p>
+                <p><strong>Emergency Contact :  </strong><span th:text="${member.emergencyContact}"></span></p>
+                <p><strong>Address :  </strong><span th:text="${member.address}"></span></p>
+                <p><strong>Gender :  </strong><span th:text="${member.gender}"></span></p>
+                <div class="medical-condition-box">
+                    <p><strong>Medical Conditions</strong></p>
+                    <textarea readonly th:text="${member.medicalConditions}"></textarea>
+                </div>
+            </div>
+
+
+            <div class="right-section">
+
+
+                <div class="topic-scheduling">
+                    <p>SCHEDULING DETAILS</p>
+                </div>
+
+                <div class="details-card">
+                    <p><strong>Booking ID :</strong> <span th:text="${member.id}"></span></p>
+                    <p><strong>Scheduled Date :</strong> <span th:text="${member.scheduleDate}"></span></p>
+                    <p><strong>Reservation Number :</strong> <span th:text="${member.reservationNumber}"></span></p>
+                    <p><strong id="reservationTime">Time :</strong>
+                        <span th:if="${member.reservationNumber} >= 1 and ${member.reservationNumber} <= 10">
+                            10:00 AM - 1:00 PM
+                        </span>
+                        <span th:if="${member.reservationNumber} >= 11 and ${member.reservationNumber} <= 20">
+                            1:00 PM - 5:00 PM
+                        </span>
+                        <span th:if="${member.reservationNumber} >= 21 and ${member.reservationNumber} <= 30">
+                            5:00 PM - 8:00 PM
+                        </span>
+                    </p>
+                </div>
+
+                <div class="assigned-coach">
+                    <p>Assign a coach for personalized guidance</p>
+
+                    <div th:if="${assignedCoach != null}">
+                        <h3>Assigned Coach</h3>
+                        <p><strong>Coach ID:</strong> <span th:text="${assignedCoach.id}"></span></p>
+                        <p><strong>Full Name:</strong> <span th:text="${assignedCoach.fullName}"></span></p>
+                    </div>
+                </div>
+
+
+
+                <!-- Table Section -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Coach Id</th>
+                                <th>Full Name</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-scroll">
+                            <table>
+                                <tbody>
+                                <th:block th:each="coach : ${coaches}">
+                                    <tr>
+                                        <td th:text="${coach.id}">
+                                        <td th:text="${coach.fullName}"></td>
+                                        <td>
+                                            <button type="button" class="btn-s "
+                                                    th:data-id="${coach.id}"
+                                                    th:data-fullname="${coach.fullName}"
+                                                    th:data-gender="${coach.gender}"
+                                                    th:data-username="${coach.userName}"
+                                                    th:data-contactnumber="${coach.contactNumber}"
+                                                    th:data-address="${coach.address}"
+                                                    th:data-experienceyears="${coach.experienceYears}"
+                                                    th:data-experiencehistory="${coach.experienceHistory}"
+                                                    onclick="openModal(this)"
+                                            >
+                                                View
+                                            </button>
+
+                                            <!-- Assign button form (only display if no coach is assigned) -->
+                                            <div th:if="${assignedCoach == null}">
+                                                <p>No coach assigned yet.</p>
+                                                <form th:action="@{/admin/assignCoach}" method="post">
+                                                    <input type="hidden" name="coachId" th:value="${coach.id}">
+                                                    <input type="hidden" name="coachId" th:value="${coach.userName}">
+                                                    <input type="hidden" name="bookingId" th:value="${member.id}">
+                                                    <button type="submit" class="btn-a">Assign</button>
+                                                </form>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </th:block>
+
+</div>
+
+<!-- Modal Structure -->
+<div id="coachDetailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Coach Details</h2>
+        <p><strong>Coach Id:</strong> <span id="modalId"></span></p>
+        <p><strong>Full Name:</strong> <span id="modalFullName"></span></p>
+        <p><strong>Gender:</strong> <span id="modalGender"></span></p>
+        <p><strong>User Name:</strong> <span id="modalUserName"></span></p>
+        <p><strong>Contact Number:</strong> <span id="modalContactNumber"></span></p>
+        <p><strong>Address:</strong> <span id="modalAddress"></span></p>
+        <p><strong>Years of Experience:</strong> <span id="modalExperienceYears"></span></p>
+        <p><strong>Experience History:</strong> <span id="modalExperienceHistory"></span></p>
+    </div>
+</div>
+
+<script>
+    // Function to open modal and set coach details
+    function openModal(button) {
+        var id = button.getAttribute('data-id');
+        var fullName = button.getAttribute('data-fullname');
+        var gender = button.getAttribute('data-gender');
+        var userName = button.getAttribute('data-username');
+        var contactNumber = button.getAttribute('data-contactnumber');
+        var address = button.getAttribute('data-address');
+        var experienceYears = button.getAttribute('data-experienceyears');
+        var experienceHistory = button.getAttribute('data-experiencehistory');
+
+        document.getElementById("modalId").textContent = id;
+        document.getElementById("modalFullName").textContent = fullName;
+        document.getElementById("modalGender").textContent = gender;
+        document.getElementById("modalUserName").textContent = userName;
+        document.getElementById("modalContactNumber").textContent = contactNumber;
+        document.getElementById("modalAddress").textContent = address;
+        document.getElementById("modalExperienceYears").textContent = experienceYears;
+        document.getElementById("modalExperienceHistory").textContent = experienceHistory;
+
+        var modal = document.getElementById("coachDetailsModal");
+        modal.classList.add("show"); // Show the modal
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        var modal = document.getElementById("coachDetailsModal");
+        modal.classList.remove("show"); // Hide the modal
+    }
+
+    // Close the modal when clicking the close button
+    document.querySelector(".close").onclick = closeModal;
+
+    // Close the modal when clicking outside the modal content
+    window.onclick = function(event) {
+        var modal = document.getElementById("coachDetailsModal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+
+
+</script>
+
+
+
+</body>
+</html>

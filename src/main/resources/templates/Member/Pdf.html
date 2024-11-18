@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <link rel="stylesheet" th:href="@{/css/member/receipt.css}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+
+<div class="receipt-card" id="receipt-content">
+    <div class="receipt-header">
+        <img th:src="@{/images/gymLogo.png}" alt="SLTMobitel Logo" class="logo">
+        <h2>PASS</h2>
+        <h4>Reservation Summary</h4>
+    </div>
+    <div class="receipt-details">
+            <p th:text="'Reservation Date : ' + ${reservation.scheduleDate}" id="receipt-date"></p>
+            <p th:text="'Reservation Number : ' + ${reservation.reservationNumber}" id="receipt-seatNumber"></p>
+            <p th:text="'Member Username : ' + ${reservation.userName}" id="receipt-userName"></p>
+            <p th:text="'Member Fullname : ' + ${reservation.fullName}" id="receipt-fullName"></p>
+            <p th:text="'Contact Number : ' + ${reservation.contactNumber}" id="receipt-contactNumber"></p>
+            <p class="Confirmed-text">CONFIRMED!</p>
+
+
+        <!-- QR Code Display -->
+        <div class="qr-code-container">
+            <canvas id="qr-code"></canvas>
+        </div>
+    </div>
+
+    <div class="receipt-footer">
+        <p>Thank you for your reservation!</p>
+    </div>
+
+    <div class="button-container">
+        <button class="download-btn" onclick="downloadReceipt()">Download Receipt</button>
+        <button type="button" class="home-btn" onclick="goBack()">Home</button>
+    </div>
+</div>
+
+<script>
+    // Generate QR code with full seat details
+    function generateQRCode() {
+        const qr = new QRious({
+            element: document.getElementById('qr-code'),
+            size: 150,
+            value: `
+
+                      ${document.getElementById('receipt-date').innerText}
+                      ${document.getElementById('receipt-seatNumber').innerText}
+                      ${document.getElementById('receipt-userName').innerText}
+                      ${document.getElementById('receipt-fullName').innerText}
+                      ${document.getElementById('receipt-contactNumber').innerText}`
+        });
+    }
+
+    // Function to download the receipt as PDF
+    async function downloadReceipt() {
+        const { jsPDF } = window.jspdf;
+        const receiptElement = document.getElementById('receipt-content');
+        const downloadBtn = document.querySelector('.download-btn');
+        const homeBtn = document.querySelector('.home-btn');
+
+        // Hide both buttons
+        downloadBtn.style.display = 'none';
+        homeBtn.style.display = 'none';
+
+        // Ensure all images are fully loaded before capturing
+        const images = receiptElement.getElementsByTagName('img');
+        const promises = Array.from(images).map(img => new Promise(resolve => {
+            if (img.complete) {
+                resolve();
+            } else {
+                img.onload = resolve;
+                img.onerror = resolve;
+            }
+        }));
+
+        await Promise.all(promises);
+
+        // Capture the receipt content as an image
+        const canvas = await html2canvas(receiptElement, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+
+        // Restore the buttons' display property
+        downloadBtn.style.display = '';
+        homeBtn.style.display = '';
+
+        // Create a new jsPDF document
+        const doc = new jsPDF();
+        doc.addImage(imgData, 'PNG', 20, 20, 170, 0);
+
+        // Save the PDF
+        doc.save('receipt.pdf');
+    }
+
+    // Function to go back to the previous page
+    function goBack() {
+        window.history.back();
+    }
+
+    // Call generateQRCode function when the page loads
+    window.onload = generateQRCode;
+</script>
+</body>
+</html>

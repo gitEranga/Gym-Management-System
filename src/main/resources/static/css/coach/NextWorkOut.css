@@ -1,0 +1,351 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: linear-gradient(to top, rgba(217, 217, 217, 0.60) 41%, rgba(115, 115, 115, 0.60) 100%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Sticks the header at the top */
+    z-index: 100; /* Ensures header stays on top */
+    background-image: url('/images/img12.jpg');
+}
+
+
+.details-row {
+    display: flex;
+    justify-content: center; /* Center the items */
+    margin: 0 auto; /* Center the row itself */
+    align-items: center; /* Vertically center content */
+    flex-wrap: wrap; /* Allow wrapping if there is not enough space */
+    margin-left:120px;
+}
+
+.details-card p {
+    font-size: 16px;
+    color: #333;
+    margin:5px 10px; /* Add margin for spacing around each paragraph */
+    padding: 5px;
+    flex: 1; /* Make each p element take equal space */
+    display: flex; /* Make p a flex container to center content */
+    align-items: center; /* Vertically center content within p */
+}
+
+.details-card p strong {
+    font-weight: 600;
+    color: #555;
+    margin-right: 10px; /* Space between strong and span */
+}
+
+
+/* Styling for the layout */
+        .container {
+            display: flex;
+            flex-direction: column; /* Keep items aligned vertically */
+            align-items: center; /* Center items horizontally */
+            padding: 20px;
+            background-color: #f9f9f9; /* Light background for a modern touch */
+            min-height: 100vh; /* Ensure full height */
+        }
+
+        /* Ensure the details card contains both columns */
+        .details-card {
+            width: 93%;
+            background-color: #ffffff; /* White background for contrast */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+            padding: 30px;
+            margin: 20px auto;
+            text-align: left; /* Align text to the left */
+        }
+
+        /* Split container for left and right side sections inside details card */
+        .split-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 20px;
+        }
+
+        /* Left column inside details card */
+        .left-column {
+            width: 48%; /* Adjusted to fit inside the details card */
+            padding: 20px;
+            background-color: #f9f9f9; /* Light background */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            overflow-y: auto;
+        }
+
+        /* Right column inside details card */
+        .right-column {
+            width: 48%; /* Adjusted to fit inside the details card */
+            padding: 20px;
+            background-color: #ffffff; /* White background for contrast */
+            border: 1px solid #ddd; /* Subtle border for definition */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            overflow-y: auto;
+        }
+
+        /* Adjust workout categories and exercise list in the right column */
+        .workout-card ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around; /* Space categories evenly */
+        }
+
+        .workout-card li {
+            flex: 1;
+            padding: 15px;
+            background-color: #e0e0e0;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .workout-card li:hover {
+            background-color: #d3d3d3;
+            transform: translateY(-3px);
+        }
+
+        .workout-details {
+            display: none; /* Hidden until clicked */
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .exercise-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .exercise-item {
+            flex: 1 1 calc(25% - 10px);
+            padding: 15px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .exercise-item:hover {
+            background-color: #ccc;
+            transform: translateY(-3px);
+        }
+
+
+        video {
+            max-width: 100%; /* Ensure video is responsive */
+            margin-top: 10px;
+            border-radius: 5px; /* Rounded video corners */
+        }
+
+
+
+
+
+
+/* Adjusted CSS for tables */
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse; /* Ensures no space between borders */
+    table-layout: fixed; /* Ensure columns have fixed widths */
+}
+
+table thead th,
+table tbody td {
+    padding: 15px; /* Consistent padding */
+    text-align: center; /* Center-align text */
+    vertical-align: middle; /* Center text vertically */
+}
+
+table thead th {
+    background-color: #e6e6e6;
+    color: #333;
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 16px;
+    border-radius: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky; /* Sticky header */
+    top: 0;
+    z-index: 1;
+}
+
+/* Scrollable table body */
+.table-scroll {
+    max-height: 300px; /* Set max height for the scrollable area */
+    overflow-y: auto;
+    display: fleax;
+    border: 1px solid #ddd; /* Add a border for the scroll area */
+}
+
+/* Ensure table width remains consistent */
+.table-scroll table {
+    width: 100%; /* Ensure table remains full-width */
+    border-collapse: collapse;
+}
+
+table tbody td {
+    background-color: #fff;
+    color: #555;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+table tbody tr:hover td {
+    background-color: #f2f2f2;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    table th,
+    table td {
+        padding: 10px;
+        font-size: 14px;
+        text-align: center; /* Ensure text alignment is center on smaller screens */
+    }
+}
+
+
+.btn-s {
+  display: flex;
+  width: 60%;
+  height: 18px;
+  margin: 0 auto; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 12px;
+  background: linear-gradient(135deg, #020202 20%, #686060 100%);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.btn-s:hover {
+  background: linear-gradient(135deg, #686060 20%, #020202 100%);
+  transform: translateY(-3px);
+}
+
+.btn-a {
+  display: flex;
+  width: 40%;
+  height: 18px;
+  margin: 0 auto; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 12px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 1rem; /* Increased text size */
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-decoration: none; /* Removes underline */
+}
+
+.btn-a:hover {
+  background-color: #68de83;
+   transform: translateY(-3px);
+}
+
+.cancel-button {
+    background-color: #ff4d4d; /* Red background for cancellation */
+    color: white; /* White text */
+    border:none;
+    border-radius: 50px;
+    padding: 5px 10px; /* Padding */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.cancel-button:hover {
+    background-color: #ff1a1a; /* Darker red on hover */
+    transform: translateY(-3px);
+}
+
+.assign-workouts-button {
+    display: flex;
+      width: 40%;
+      height: 18px;
+      margin: 0 auto; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      justify-content: center; /* Center horizontally */
+      padding: 12px;
+      background-color: #28a745;
+      color: #fff;
+      font-size: 1rem; /* Increased text size */
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      text-decoration: none; /* Removes underline */
+}
+.assign-workouts-button:hover {
+   transform: translateY(-3px);
+}
+
+
+
+.alert {
+    padding: 15px 20px;
+    background-color: rgba(244, 67, 54, 0.8); /* Red with subtle transparency */
+    color: white;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    font-family: Arial, sans-serif; /* Modern font */
+}
+
+.alert-success {
+    padding: 15px 20px;
+    background-color: rgba(11, 176, 44, 0.8); /* Green with subtle transparency */
+    color: white;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    font-family: Arial, sans-serif; /* Modern font */
+}
+
+.alert-danger {
+    padding: 15px 20px;
+    background-color: rgba(244, 67, 54, 0.8); /* Red with subtle transparency */
+    color: white;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    font-family: Arial, sans-serif; /* Modern font */
+}

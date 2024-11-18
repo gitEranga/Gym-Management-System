@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/member/dashboardMember.css}">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management and Online Coaching Platform</h1>
+    </div>
+</header>
+
+<div class="container">
+    <nav class="sidebar">
+        <img th:src="@{/images/gymLogo.png}" alt="Gym Logo" class="logo">
+        <ul>
+            <li><a th:href="@{/member/dashboard}">HOME</a></li>
+            <li><a th:href="@{/member/dashboard_reservation}">RESERVATION</a></li>
+            <li><a th:href="@{/member/history/page}">HISTORY</a></li>
+            <li><a href="#">DAILY REPORTS</a></li>
+            <li><a href="#">PAYMENTS</a></li>
+            <li><a href="#">DETAILS</a></li>
+            <form action="/member/logout" method="post">
+                <button type="submit" class="btn logout-btn">Log out</button>
+            </form>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <p>Start Workouts With Next Workout Plan</p>
+        <p>Every workout gets you closer to your goal—keep moving forward!</p>
+
+        <div class="details-card">
+            <div th:if="${reservation == null}">
+                <p>No upcoming reservations found.</p>
+            </div>
+
+            <div th:if="${reservation != null}" class="details-card-2">
+                <strong>Scheduled Date :</strong>
+                <span th:text="${reservation.scheduleDate}"></span>
+            </div>
+
+            <div class="details-card-3" th:if="${workouts != null}">
+                <ul class="workout-list">
+                    <li class="workout-item" th:each="workout : ${workouts}">
+                        <div class="workout-content">
+                            <div class="workout-info">
+                                <h3 class="workout-name" th:text="${workout.workoutName}"></h3>
+                                <strong>Reps :</strong> <span th:text="${workout.reps}"></span><br>
+                                <strong>Sets :</strong> <span th:text="${workout.sets}"></span><br>
+                                <strong>Description :</strong> <span th:text="${workout.description}"></span>
+                            </div>
+                            <div class="workout-video">
+                                <video class="exercise-video" loop muted controls>
+                                    <source th:src="${workout.videoLink}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div th:if="${message != null}">
+                <p th:text="${message}"></p>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', observeVideos);
+
+    function observeVideos() {
+        const videos = document.querySelectorAll('.exercise-video');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        videos.forEach(video => {
+            video.addEventListener('ended', () => {
+                video.currentTime = 0;
+                video.play();
+            });
+            observer.observe(video);
+        });
+    }
+</script>
+</body>
+</html>

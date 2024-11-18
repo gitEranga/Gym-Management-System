@@ -1,0 +1,140 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+header {
+    background: linear-gradient(to top, rgba(217, 217, 217, 0.60) 41%, rgba(115, 115, 115, 0.60) 100%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 60px; /* Adjusted header height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0,0.5);
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Sticks the header at the top */
+     z-index: 999;
+    background-image: url('/images/img12.jpg');
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logo {
+  height: 50px; /* Increased logo height to match the header size */
+  margin-right: 10px;
+  margin-top: -4px;
+  margin-bottom:-8px;
+}
+
+h1 {
+  font-size: 32px;
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.container {
+  display: flex;
+}
+
+
+.receipt-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top:30px;
+}
+
+.receipt-header h2 {
+    color: #2a9d8f;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.receipt-details p {
+    font-size: 14px;
+    margin: 10px 0;
+    color: #555;
+}
+
+.receipt-details span {
+    font-weight: bold;
+    color: #333;
+}
+
+.receipt-footer p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #777;
+    margin-bottom:-10px;
+}
+
+.receipt-footer-2 p {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #777;
+}
+
+
+.Confirmed-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50; /* Green color for confirmation */
+    background-color: #e8f5e9; /* Light green background */
+    padding: 10px;
+    border-radius: 5px;
+    text-transform: uppercase; /* Uppercase text */
+    letter-spacing: 1px; /* Slightly increased letter spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+    margin-top: 18px; /* Space above the text */
+    margin-bottom: 50px;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Center align buttons */
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px; /* Space above the button container */
+}
+
+.download-btn,
+.home-btn {
+    background: linear-gradient(135deg, #020202 0%, #686060 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.download-btn:hover,
+.home-btn:hover {
+    background: linear-gradient(135deg, #046A98 0%, #50B748 100%);
+}
+
+.home-btn {
+    background: linear-gradient(135deg, #020202 0%, #686060 100%);
+}
+
+.home-btn:hover {
+    background: linear-gradient(135deg, #686060 0%, #020202 100%);
+}

@@ -1,0 +1,418 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: linear-gradient(to top, rgba(217, 217, 217, 0.60) 41%, rgba(115, 115, 115, 0.60) 100%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Sticks the header at the top */
+    z-index: 100; /* Ensures header stays on top */
+    background-image: url('/images/img12.jpg');
+}
+
+/* Profile card container */
+.profile-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Aligns both sections at the top */
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    max-width: 800px;
+    margin: 80px auto; /* Creates space between the header and card */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Left section styling */
+.left-section {
+    width: 50%;
+    padding-right: 20px;
+    text-align: center;
+    border-right: 2px solid #eaeaea;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Avatar styling */
+.avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #f0f0f0;
+}
+
+/* Medical condition box */
+.medical-condition-box {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.medical-condition-box textarea {
+    width: 100%;
+    height: 100px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: #555;
+    padding: 10px;
+}
+
+/* Right section styling */
+.right-section {
+    width: 50%;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Modern card-like styling for right section details */
+.details-card {
+    width: 80%;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    margin-top: 30px;
+    margin:0 auto;
+}
+
+.details-card p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.details-card p strong {
+    font-weight: 600;
+    color: #555;
+    margin-right:20px;
+}
+
+
+/* Button styling */
+.btn-view {
+    display: inline-block;
+    padding: 10px 20px;
+   background: linear-gradient(135deg, #020202 0%, #686060 100%);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    position: fixed; /* Fixed positioning makes it always visible */
+    bottom: 20px; /* Stick to the bottom */
+    right: 20px; /* Stick to the right */
+    z-index: 100; /* Ensures the button stays on top of other elements */
+}
+
+.btn-view:hover {
+    background: linear-gradient(135deg, #686060 0%, #020202 100%);
+}
+
+
+/* Scheduling Topic styling */
+.topic-scheduling {
+    background-color: #28a745; /* Green background to match your button color */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-top:40px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 100%;
+}
+
+.topic-scheduling p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling for Assigned Coach section */
+.assigned-coach {
+    font-size: 18px;
+    font-weight: normal; /* Removed bold */
+    color: #444; /* Darker gray for better contrast */
+    margin-top: 30px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f4f4f4; /* Slightly darker background for contrast */
+    border: 1px solid #ddd; /* Lighter border for a subtle look */
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    text-align: center; /* Center-align the entire section */
+}
+
+/* Styling for the paragraph in the Assigned Coach section */
+.assigned-coach p {
+    margin: 5px 0;
+    padding: 5px 0;
+    font-size: 16px;
+    color: #222; /* Darker text for readability */
+    font-weight: bold;
+}
+
+/* Modern look for the Assigned Coach heading */
+.assigned-coach h3 {
+    font-size: 22px;
+    color: #007BFF; /* Blue color for emphasis and visual appeal */
+    margin-bottom: 10px;
+    text-transform: uppercase; /* Uppercase for a bold look without bold weight */
+    letter-spacing: 1.5px; /* Slight spacing between letters */
+    font-weight: 500; /* Medium weight for better clarity */
+}
+
+/* Adjust the labels inside the section */
+.assigned-coach span {
+    color: #333; /* Softer black for the details */
+    font-weight: normal;
+}
+
+
+
+/* Basic modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background: rgba(0, 0, 0, 0.4); /* Darker semi-transparent black */
+    backdrop-filter: blur(8px); /* Adds blur effect to the background */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Modal content styling */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto; /* Centered with margin from top */
+    padding: 30px;
+    border-radius: 8px; /* Rounded corners */
+    width: 80%; /* Adjusted width */
+    max-width: 500px; /* Max width for larger screens */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    position: relative; /* For close button positioning */
+    transition: transform 0.3s ease; /* Smooth entrance/exit */
+    animation: slideIn 0.3s ease; /* Animation for showing modal */
+    text-align: center; /* Center-align text */
+}
+
+/* Close button styling */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #555;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #000; /* Darker color on hover */
+}
+
+/* Show modal with opacity transition */
+.modal.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hide modal with opacity transition */
+.modal.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Enhanced text styling inside modal */
+.modal-content h2 {
+    margin: 0;
+    color: #222;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.modal-content p {
+    margin: 16px 0;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.modal-content strong {
+    color: #333;
+    font-weight: 600;
+    text-align: left; /* Align strong text to the left for better readability */
+    display: inline-block; /* Keep the strong element inline with text */
+    margin-right: 8px; /* Space between label and value */
+}
+
+/* Animation for modal entrance */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+/* Adjusted CSS for tables */
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse; /* Ensures no space between borders */
+    table-layout: fixed; /* Ensure columns have fixed widths */
+}
+
+table thead th,
+table tbody td {
+    padding: 15px; /* Consistent padding */
+    text-align: center; /* Center-align text */
+    vertical-align: middle; /* Center text vertically */
+}
+
+table thead th {
+    background-color: #e6e6e6;
+    color: #333;
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 16px;
+    border-radius: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky; /* Sticky header */
+    top: 0;
+    z-index: 1;
+}
+
+/* Scrollable table body */
+.table-scroll {
+    max-height: 300px; /* Set max height for the scrollable area */
+    overflow-y: auto;
+    display: fleax;
+    border: 1px solid #ddd; /* Add a border for the scroll area */
+}
+
+/* Ensure table width remains consistent */
+.table-scroll table {
+    width: 100%; /* Ensure table remains full-width */
+    border-collapse: collapse;
+}
+
+table tbody td {
+    background-color: #fff;
+    color: #555;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+table tbody tr:hover td {
+    background-color: #f2f2f2;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    table th,
+    table td {
+        padding: 10px;
+        font-size: 14px;
+        text-align: center; /* Ensure text alignment is center on smaller screens */
+    }
+}
+
+
+.btn-s {
+  display: flex;
+  width: 60%;
+  height: 18px;
+  margin: 0 auto; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 12px;
+  background: linear-gradient(135deg, #020202 20%, #686060 100%);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-s:hover {
+  background: linear-gradient(135deg, #686060 20%, #020202 100%);
+}
+
+.btn-a {
+  display: flex;
+  width: 60%;
+  height: 18px;
+  margin: 0 auto; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 12px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-a:hover {
+  background-color: #68de83;
+}

@@ -1,0 +1,154 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background: linear-gradient(to top, rgba(217, 217, 217, 0.60) 41%, rgba(115, 115, 115, 0.60) 100%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    top: 0;
+    z-index: 100;
+    background-image: url('/images/img12.jpg');
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.scroll-container {
+    display: flex;
+    align-items: center;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 10px; /* Add padding for aesthetics */
+}
+
+.workouts-container {
+    display: flex; /* Change to flex to allow one row */
+    gap: 20px; /* Adjust spacing between cards */
+    /* Removed grid properties */
+    overflow-x: auto; /* Allow horizontal scrolling */
+    scroll-behavior: smooth; /* Smooth scrolling */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.workout-card {
+    min-width: 400px; /* Set a minimum width for cards */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin: 15px 5px 15px 5px; /* top, right, bottom, left */
+}
+
+.workout-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgb(0, 0, 15);
+}
+
+.card-header {
+    border-bottom: 2px solid #eee;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+.card-header h2 {
+    margin: 5px 0;
+    color: #444;
+    margin-bottom:-10px;
+}
+
+.card-header h3 {
+    margin: 5px 0;
+    color: #444;
+    margin-bottom:-15px;
+}
+
+.workout-details {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(5, 1fr); /* Five columns for details */
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+}
+
+.detail-item strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.video {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+video {
+    margin-left: -10px;
+    width: 140%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffefc1;
+    border-left: 4px solid #ffc107;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.detail-row {
+    display: contents; /* Or you could use display: flex; if needed */
+}
+
+.scroll-btn {
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.scroll-btn:hover {
+    background-color: #f1f1f1; /* Slight background change on hover */
+}
+
+.scroll-btn.left {
+    position: absolute; /* Positioning for left button */
+    left: 10px; /* Adjust as needed */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Center vertically */
+}
+
+.scroll-btn.right {
+    position: absolute; /* Positioning for right button */
+    right: 10px; /* Adjust as needed */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Center vertically */
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member History</title>
+    <link rel="stylesheet" th:href="@{/css/coach/memberHistory.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Gym Management & Coaching Platform</h1>
+    </div>
+</header>
+
+<div class="content">
+    <a th:href="@{/coach/coach_dashboard}" class="btn-back">← Back</a>
+
+    <div class="member-grid" th:each="member : ${members}">
+        <div class="member-card">
+            <!-- Left Column: Member Info -->
+            <div class="left-section">
+                <div class="avatar">
+                    <img th:src="@{/images/man.png}" alt="Avatar">
+                </div>
+                <h2 th:text="${member.userName}"></h2>
+                <p><strong>Member ID:</strong> <span th:text="${member.memberId}"></span></p>
+                <p><strong>User Name:</strong> <span th:text="${member.fullName}"></span></p>
+                <p><strong>Contact:</strong> <span th:text="${member.contactNumber}"></span></p>
+                <p><strong>Emergency Contact:</strong> <span th:text="${member.emergencyContact}"></span></p>
+                <p><strong>Address:</strong> <span th:text="${member.address}"></span></p>
+                <p><strong>Gender:</strong> <span th:text="${member.gender}"></span></p>
+            </div>
+
+            <!-- Right Column: Booking Details -->
+            <div class="right-section">
+                <h3>Booking Details</h3>
+                <p><strong>Booking ID :   </strong> <span th:text="${member.id}"></span></p>
+                <p><strong>Scheduled Date :   </strong> <span th:text="${member.scheduleDate}"></span></p>
+                <p><strong>Reservation No :   </strong> <span th:text="${member.reservationNumber}"></span></p>
+                <p><strong>Time Slot :   </strong>
+                    <span th:if="${member.reservationNumber} <= 10">10:00 AM - 1:00 PM</span>
+                    <span th:if="${member.reservationNumber} <= 20">1:00 PM - 5:00 PM</span>
+                    <span th:if="${member.reservationNumber} > 20">5:00 PM - 8:00 PM</span>
+                </p>
+                <a th:href="@{/workouts/daily_workouts(username=${member.fullName})}" class="btn-action">
+                    View Daily Workouts
+                </a>
+                <a th:href="@{/workouts/NextWorkouts(username=${member.userName}, id=${member.id})}" class="btn-action">
+                    Add Next Workouts
+                </a>
+                <a th:href="@{/workouts/daily_workouts(username=${member.fullName})}" class="btn-action">
+                    Current Meal Plan
+                </a>
+                <a th:href="@{/workouts/NextWorkouts(username=${member.userName}, id=${member.id})}" class="btn-action">
+                   Update Meal Plan
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
